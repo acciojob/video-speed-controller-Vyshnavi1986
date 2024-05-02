@@ -35,8 +35,16 @@ function handleRangeUpdate() {
   video[this.name] = this.value;
 }
 
-function skip() {
+function skip() 
+{
+	if(parseFloat(this.dataset.skip)==-10)
+		rewind();
+	else
   video.currentTime += parseFloat(this.dataset.skip);
+}
+function rewind()
+{
+	video.currentTime +=parseFloat(this.dataset.skip);
 }
 
 video.addEventListener('click', togglePlay);
