@@ -1,43 +1,51 @@
-const player = document.querySelector('.player');
-const video = player.querySelector('.player__video');
-const progress = player.querySelector('.progress');
-const progressBar = player.querySelector('.progress__filled');
-const toggle = player.querySelector('.toggle');
-const volumeRange = player.querySelector('input[name="volume"]');
-const playbackSpeedRange = player.querySelector('input[name="playbackSpeed"]');
-const skipButtons = player.querySelectorAll('.skip');
+document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('video');
+    const playPauseButton = document.getElementById('playPause');
+    const rewindButton = document.getElementById('rewind');
+    const forwardButton = document.getElementById('forward');
+    const volumeControl = document.getElementById('volume');
+    const playbackSpeedControl = document.getElementById('playbackSpeed');
+    const progressFilled = document.getElementById('progress__filled');
+    const progressBar = document.querySelector('.progress-bar');
 
-function togglePlay() {
-  if (video.paused) {
-    video.play();
-  } else {
-    video.pause();
-  }
-}
+    // Update progress bar
+    video.addEventListener('timeupdate', () => {
+        const percent = (video.currentTime / video.duration) * 100;
+        progressFilled.style.width = `${percent}%`;
+    });
 
-function updateButton() {
-  const icon = video.paused ? '►' : '❚ ❚';
-  toggle.textContent = icon;
-}
+    // Toggle play/pause
+    playPauseButton.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+            playPauseButton.textContent = '❚ ❚';
+        } else {
+            video.pause();
+            playPauseButton.textContent = '►';
+        }
+    });
 
-function handleProgress() {
-  const percent = (video.currentTime / video.duration) * 100;
-  progressBar.style.flexBasis = `${percent}%`;
-}
+    // Rewind 10 seconds
+    rewindButton.addEventListener('click', () => {
+        video.currentTime -= 10;
+    });
 
-function skip() {
-  video.currentTime += parseFloat(this.dataset.skip);
-}
+    // Forward 25 seconds
+    forwardButton.addEventListener('click', () => {
+        video.currentTime += 25;
+    });
 
-function handleRangeUpdate() {
-  video[this.name] = this.value;
-}
+    // Adjust volume
+    volumeControl.addEventListener('input', () => {
+        video.volume = volumeControl.value;
+    });
 
-video.addEventListener('click', togglePlay);
-video.addEventListener('play', updateButton);
-video.addEventListener('pause', updateButton);
-video.addEventListener('timeupdate', handleProgress);
-toggle.addEventListener('click', togglePlay);
-volumeRange.addEventListener('input', handleRangeUpdate);
-playbackSpeedRange.addEventListener('input', handleRangeUpdate);
-skipButtons.forEach(button => button.addEventListener('click', skip));
+    // Adjust playback speed
+    playbackSpeedControl.addEventListener('input', () => {
+        video.playbackRate = playbackSpeedControl.value;
+    });
+
+    // Update volume and playback speed values on load
+    volumeControl.value = video.volume;
+    playbackSpeedControl.value = video.playbackRate;
+});
