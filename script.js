@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('video');
+    const video = document.getElementById('player__video');
     const playPauseButton = document.getElementById('playPause');
     const rewindButton = document.getElementById('rewind');
     const forwardButton = document.getElementById('forward');
